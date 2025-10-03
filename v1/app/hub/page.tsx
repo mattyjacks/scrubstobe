@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
-import { BookOpen, Brain, Trophy, Users, TrendingUp, Clock, Award, Target } from "lucide-react";
+import { BookOpen, Brain, Trophy, Users, TrendingUp, Clock, Target, Flame, Zap, Star, CheckCircle, Heart, Sparkles, ArrowUpRight, Calendar, BarChart3, Medal, Library, ExternalLink, FileText, Newspaper, Stethoscope, Microscope, Pill, Activity } from "lucide-react";
 
 export default async function HubPage() {
   const supabase = await createClient();
@@ -11,145 +11,489 @@ export default async function HubPage() {
     redirect("/auth/login");
   }
 
+  // Simulated data - in production, this would come from database
+  const userData = {
+    name: data.claims.email?.split('@')[0] || "Student",
+    streak: 0,
+    level: 1,
+    xp: 0,
+    xpToNextLevel: 1000,
+    questionsCompleted: 0,
+    points: 0,
+    accuracy: 0,
+    studyTime: 0,
+    badges: [],
+    recentActivity: []
+  };
+
+  const achievements = [
+    { id: 1, name: "First Steps", description: "Complete your first quiz", icon: Target, unlocked: false, color: "text-blue-500", bgColor: "bg-blue-500/10" },
+    { id: 2, name: "Quick Learner", description: "Complete 10 questions", icon: Zap, unlocked: false, color: "text-yellow-500", bgColor: "bg-yellow-500/10" },
+    { id: 3, name: "Dedicated", description: "Maintain a 7-day streak", icon: Flame, unlocked: false, color: "text-orange-500", bgColor: "bg-orange-500/10" },
+    { id: 4, name: "Perfect Score", description: "Get 100% on any quiz", icon: Star, unlocked: false, color: "text-purple-500", bgColor: "bg-purple-500/10" }
+  ];
+
+  const quickActions = [
+    { title: "Continue General Exam", subtitle: "Question 3 of 5", href: "/test-prep", icon: Brain, color: "text-blue-500", bgColor: "bg-blue-500/10" },
+    { title: "Study Cardiovascular System", subtitle: "15 min remaining", href: "/encyclopedia", icon: Heart, color: "text-red-500", bgColor: "bg-red-500/10" },
+    { title: "Review Missed Questions", subtitle: "3 questions to review", href: "/test-prep", icon: CheckCircle, color: "text-green-500", bgColor: "bg-green-500/10" }
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
-      {/* Header */}
-      <div className="border-b border-border bg-background/80 backdrop-blur-sm">
+    <div className="min-h-screen bg-gradient-to-b from-background via-muted/10 to-muted/20">
+      {/* Enhanced Header with Streak & Level */}
+      <div className="border-b border-border bg-background/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-5 py-6">
-          <h1 className="text-3xl font-bold mb-2">Welcome to Your Learning Hub</h1>
-          <p className="text-muted-foreground">Continue your journey to becoming a healthcare professional</p>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <h1 className="text-3xl md:text-4xl font-bold mb-2 bg-gradient-to-r from-primary via-blue-500 to-purple-500 bg-clip-text text-transparent">
+                Welcome Back, {userData.name}! 👋
+              </h1>
+              <p className="text-muted-foreground">Continue your journey to becoming a healthcare professional</p>
+            </div>
+            
+            <div className="flex items-center gap-4">
+              {/* Streak Counter */}
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/20">
+                <Flame className="w-5 h-5 text-orange-500" />
+                <div>
+                  <div className="text-xs text-muted-foreground">Streak</div>
+                  <div className="text-lg font-bold text-orange-500">{userData.streak} days</div>
+                </div>
+              </div>
+              
+              {/* Level Badge */}
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
+                <Sparkles className="w-5 h-5 text-primary" />
+                <div>
+                  <div className="text-xs text-muted-foreground">Level</div>
+                  <div className="text-lg font-bold text-primary">{userData.level}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* XP Progress Bar */}
+          <div className="mt-4">
+            <div className="flex items-center justify-between text-sm mb-2">
+              <span className="text-muted-foreground">Progress to Level {userData.level + 1}</span>
+              <span className="font-semibold">{userData.xp} / {userData.xpToNextLevel} XP</span>
+            </div>
+            <div className="h-3 bg-muted rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-gradient-to-r from-primary via-blue-500 to-purple-500 transition-all duration-500 rounded-full"
+                style={{ width: `${(userData.xp / userData.xpToNextLevel) * 100}%` }}
+              />
+            </div>
+          </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-5 py-12">
-        {/* Quick Stats */}
+        {/* Quick Actions - Prominent Section */}
+        <div className="mb-12">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold flex items-center gap-2">
+              <Zap className="w-6 h-6 text-primary" />
+              Quick Actions
+            </h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {quickActions.map((action, idx) => {
+              const Icon = action.icon;
+              return (
+                <Link key={idx} href={action.href} className="group">
+                  <div className={`p-6 rounded-xl border border-border bg-card hover:shadow-xl hover:border-primary/50 transition-all duration-300 ${action.bgColor}`}>
+                    <div className="flex items-start justify-between mb-4">
+                      <div className={`w-12 h-12 rounded-xl ${action.bgColor} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                        <Icon className={`w-6 h-6 ${action.color}`} />
+                      </div>
+                      <ArrowUpRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                    </div>
+                    <h3 className="text-lg font-bold mb-1">{action.title}</h3>
+                    <p className="text-sm text-muted-foreground">{action.subtitle}</p>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Enhanced Stats with Visual Appeal */}
         <div className="grid md:grid-cols-4 gap-6 mb-12">
-          <div className="p-6 rounded-xl border border-border bg-card">
-            <div className="flex items-center justify-between mb-2">
-              <Target className="w-8 h-8 text-blue-500" />
-              <span className="text-2xl font-bold">0</span>
+          <div className="group p-6 rounded-xl border border-border bg-card hover:shadow-lg hover:border-blue-500/50 transition-all duration-300 cursor-pointer">
+            <div className="flex items-center justify-between mb-3">
+              <div className="p-3 rounded-xl bg-blue-500/10 group-hover:bg-blue-500/20 transition-colors">
+                <Target className="w-6 h-6 text-blue-500" />
+              </div>
+              <span className="text-3xl font-bold text-blue-500">{userData.questionsCompleted}</span>
             </div>
-            <p className="text-sm text-muted-foreground">Questions Completed</p>
+            <p className="text-sm font-medium text-muted-foreground">Questions Completed</p>
+            <div className="mt-3 h-1 bg-muted rounded-full overflow-hidden">
+              <div className="h-full bg-blue-500 w-0 group-hover:w-full transition-all duration-500" />
+            </div>
           </div>
 
-          <div className="p-6 rounded-xl border border-border bg-card">
-            <div className="flex items-center justify-between mb-2">
-              <Trophy className="w-8 h-8 text-yellow-500" />
-              <span className="text-2xl font-bold">0</span>
+          <div className="group p-6 rounded-xl border border-border bg-card hover:shadow-lg hover:border-yellow-500/50 transition-all duration-300 cursor-pointer">
+            <div className="flex items-center justify-between mb-3">
+              <div className="p-3 rounded-xl bg-yellow-500/10 group-hover:bg-yellow-500/20 transition-colors">
+                <Trophy className="w-6 h-6 text-yellow-500" />
+              </div>
+              <span className="text-3xl font-bold text-yellow-500">{userData.points}</span>
             </div>
-            <p className="text-sm text-muted-foreground">Points Earned</p>
+            <p className="text-sm font-medium text-muted-foreground">Points Earned</p>
+            <div className="mt-3 h-1 bg-muted rounded-full overflow-hidden">
+              <div className="h-full bg-yellow-500 w-0 group-hover:w-full transition-all duration-500" />
+            </div>
           </div>
 
-          <div className="p-6 rounded-xl border border-border bg-card">
-            <div className="flex items-center justify-between mb-2">
-              <TrendingUp className="w-8 h-8 text-green-500" />
-              <span className="text-2xl font-bold">0%</span>
+          <div className="group p-6 rounded-xl border border-border bg-card hover:shadow-lg hover:border-green-500/50 transition-all duration-300 cursor-pointer">
+            <div className="flex items-center justify-between mb-3">
+              <div className="p-3 rounded-xl bg-green-500/10 group-hover:bg-green-500/20 transition-colors">
+                <TrendingUp className="w-6 h-6 text-green-500" />
+              </div>
+              <span className="text-3xl font-bold text-green-500">{userData.accuracy}%</span>
             </div>
-            <p className="text-sm text-muted-foreground">Accuracy Rate</p>
+            <p className="text-sm font-medium text-muted-foreground">Accuracy Rate</p>
+            <div className="mt-3 h-1 bg-muted rounded-full overflow-hidden">
+              <div className="h-full bg-green-500 w-0 group-hover:w-full transition-all duration-500" />
+            </div>
           </div>
 
-          <div className="p-6 rounded-xl border border-border bg-card">
-            <div className="flex items-center justify-between mb-2">
-              <Clock className="w-8 h-8 text-purple-500" />
-              <span className="text-2xl font-bold">0h</span>
+          <div className="group p-6 rounded-xl border border-border bg-card hover:shadow-lg hover:border-purple-500/50 transition-all duration-300 cursor-pointer">
+            <div className="flex items-center justify-between mb-3">
+              <div className="p-3 rounded-xl bg-purple-500/10 group-hover:bg-purple-500/20 transition-colors">
+                <Clock className="w-6 h-6 text-purple-500" />
+              </div>
+              <span className="text-3xl font-bold text-purple-500">{userData.studyTime}h</span>
             </div>
-            <p className="text-sm text-muted-foreground">Study Time</p>
+            <p className="text-sm font-medium text-muted-foreground">Study Time</p>
+            <div className="mt-3 h-1 bg-muted rounded-full overflow-hidden">
+              <div className="h-full bg-purple-500 w-0 group-hover:w-full transition-all duration-500" />
+            </div>
+          </div>
+        </div>
+
+        {/* Achievements Section */}
+        <div className="mb-12">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold flex items-center gap-2">
+              <Medal className="w-6 h-6 text-primary" />
+              Achievements
+            </h2>
+            <Link href="/achievements" className="text-primary font-semibold hover:underline text-sm">
+              View All
+            </Link>
+          </div>
+          <div className="grid md:grid-cols-4 gap-6">
+            {achievements.map((achievement) => {
+              const Icon = achievement.icon;
+              return (
+                <div 
+                  key={achievement.id} 
+                  className={`p-6 rounded-xl border ${achievement.unlocked ? 'border-primary/50 bg-card' : 'border-border bg-muted/30'} transition-all duration-300 ${achievement.unlocked ? 'hover:shadow-lg' : 'opacity-60'}`}
+                >
+                  <div className={`w-16 h-16 rounded-full ${achievement.unlocked ? achievement.bgColor : 'bg-muted'} flex items-center justify-center mx-auto mb-4 ${achievement.unlocked ? 'animate-pulse' : ''}`}>
+                    <Icon className={`w-8 h-8 ${achievement.unlocked ? achievement.color : 'text-muted-foreground'}`} />
+                  </div>
+                  <h3 className="font-bold text-center mb-2">{achievement.name}</h3>
+                  <p className="text-xs text-muted-foreground text-center">{achievement.description}</p>
+                  {!achievement.unlocked && (
+                    <div className="mt-3 text-center">
+                      <span className="text-xs font-semibold text-muted-foreground">🔒 Locked</span>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Two Column Layout */}
+        <div className="grid lg:grid-cols-2 gap-8 mb-12">
+          {/* Study Calendar */}
+          <div className="rounded-2xl border border-border bg-card p-8">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold flex items-center gap-2">
+                <Calendar className="w-6 h-6 text-primary" />
+                This Week
+              </h2>
+            </div>
+            <div className="space-y-3">
+              {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, idx) => (
+                <div key={day} className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
+                  <span className="font-semibold">{day}</span>
+                  <div className="flex items-center gap-2">
+                    {idx < 0 ? (
+                      <>
+                        <CheckCircle className="w-5 h-5 text-green-500" />
+                        <span className="text-sm text-muted-foreground">15 min</span>
+                      </>
+                    ) : (
+                      <span className="text-sm text-muted-foreground">Not started</span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Performance Chart */}
+          <div className="rounded-2xl border border-border bg-card p-8">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold flex items-center gap-2">
+                <BarChart3 className="w-6 h-6 text-primary" />
+                Performance Trends
+              </h2>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium">General Medical</span>
+                  <span className="text-sm font-bold">0%</span>
+                </div>
+                <div className="h-2 bg-muted rounded-full overflow-hidden">
+                  <div className="h-full bg-blue-500" style={{ width: '0%' }} />
+                </div>
+              </div>
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium">Cardiology</span>
+                  <span className="text-sm font-bold">0%</span>
+                </div>
+                <div className="h-2 bg-muted rounded-full overflow-hidden">
+                  <div className="h-full bg-red-500" style={{ width: '0%' }} />
+                </div>
+              </div>
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium">Anesthesiology</span>
+                  <span className="text-sm font-bold">0%</span>
+                </div>
+                <div className="h-2 bg-muted rounded-full overflow-hidden">
+                  <div className="h-full bg-green-500" style={{ width: '0%' }} />
+                </div>
+              </div>
+            </div>
+            <div className="mt-6 p-4 rounded-lg bg-muted/30">
+              <p className="text-sm text-muted-foreground text-center">
+                Complete exams to see your performance trends
+              </p>
+            </div>
           </div>
         </div>
 
         {/* Main Navigation Cards */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {/* Test Prep */}
-          <Link href="/test-prep" className="group">
-            <div className="p-8 rounded-2xl border border-border bg-card hover:shadow-2xl hover:border-primary/50 transition-all duration-300 h-full">
-              <div className="w-16 h-16 rounded-xl bg-blue-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Brain className="w-8 h-8 text-blue-500" />
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+            <BookOpen className="w-6 h-6 text-primary" />
+            Explore Learning Paths
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <Link href="/test-prep" className="group">
+              <div className="relative overflow-hidden p-8 rounded-2xl border border-border bg-gradient-to-br from-blue-500/10 to-blue-500/5 hover:shadow-2xl hover:border-blue-500/50 transition-all duration-300 h-full">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500" />
+                <div className="relative">
+                  <div className="w-16 h-16 rounded-xl bg-blue-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <Brain className="w-8 h-8 text-blue-500" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-3">Test Prep</h3>
+                  <p className="text-muted-foreground mb-4">
+                    3 specialized exams with randomized questions
+                  </p>
+                  <div className="flex items-center text-blue-500 font-semibold">
+                    Start Practicing
+                    <ArrowUpRight className="w-5 h-5 ml-1 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                  </div>
+                </div>
               </div>
-              <h3 className="text-2xl font-bold mb-3">Test Prep</h3>
-              <p className="text-muted-foreground mb-4">
-                Practice with medical questions and track your progress toward licensing exams
-              </p>
-              <div className="flex items-center text-primary font-semibold">
-                Start Practicing →
-              </div>
-            </div>
-          </Link>
+            </Link>
 
-          {/* Encyclopedia */}
-          <Link href="/encyclopedia" className="group">
-            <div className="p-8 rounded-2xl border border-border bg-card hover:shadow-2xl hover:border-primary/50 transition-all duration-300 h-full">
-              <div className="w-16 h-16 rounded-xl bg-green-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <BookOpen className="w-8 h-8 text-green-500" />
+            <Link href="/encyclopedia" className="group">
+              <div className="relative overflow-hidden p-8 rounded-2xl border border-border bg-gradient-to-br from-green-500/10 to-green-500/5 hover:shadow-2xl hover:border-green-500/50 transition-all duration-300 h-full">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500" />
+                <div className="relative">
+                  <div className="w-16 h-16 rounded-xl bg-green-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <BookOpen className="w-8 h-8 text-green-500" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-3">Encyclopedia</h3>
+                  <p className="text-muted-foreground mb-4">
+                    6 systems with interactive 3D models
+                  </p>
+                  <div className="flex items-center text-green-500 font-semibold">
+                    Explore Now
+                    <ArrowUpRight className="w-5 h-5 ml-1 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                  </div>
+                </div>
               </div>
-              <h3 className="text-2xl font-bold mb-3">Encyclopedia</h3>
-              <p className="text-muted-foreground mb-4">
-                Explore comprehensive medical knowledge with interactive 3D models and detailed articles
-              </p>
-              <div className="flex items-center text-primary font-semibold">
-                Explore Now →
-              </div>
-            </div>
-          </Link>
+            </Link>
 
-          {/* Newsletter */}
-          <Link href="/newsletter" className="group">
-            <div className="p-8 rounded-2xl border border-border bg-card hover:shadow-2xl hover:border-primary/50 transition-all duration-300 h-full">
-              <div className="w-16 h-16 rounded-xl bg-purple-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Users className="w-8 h-8 text-purple-500" />
+            <Link href="/newsletter" className="group">
+              <div className="relative overflow-hidden p-8 rounded-2xl border border-border bg-gradient-to-br from-purple-500/10 to-purple-500/5 hover:shadow-2xl hover:border-purple-500/50 transition-all duration-300 h-full">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500" />
+                <div className="relative">
+                  <div className="w-16 h-16 rounded-xl bg-purple-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <Users className="w-8 h-8 text-purple-500" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-3">Community</h3>
+                  <p className="text-muted-foreground mb-4">
+                    Connect with 25,000+ medical students
+                  </p>
+                  <div className="flex items-center text-purple-500 font-semibold">
+                    Join Now
+                    <ArrowUpRight className="w-5 h-5 ml-1 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                  </div>
+                </div>
               </div>
-              <h3 className="text-2xl font-bold mb-3">Newsletter</h3>
-              <p className="text-muted-foreground mb-4">
-                Stay updated with the latest in medical education and connect with the community
-              </p>
-              <div className="flex items-center text-primary font-semibold">
-                Read Latest →
-              </div>
-            </div>
-          </Link>
-        </div>
-
-        {/* Recent Activity */}
-        <div className="rounded-2xl border border-border bg-card p-8">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">Recent Activity</h2>
-            <Link href="/progress" className="text-primary font-semibold hover:underline">
-              View All
             </Link>
           </div>
-          <div className="text-center py-12 text-muted-foreground">
-            <Award className="w-12 h-12 mx-auto mb-4 opacity-50" />
-            <p>No activity yet. Start your learning journey today!</p>
+        </div>
+
+        {/* Medical Library Section */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+            <Library className="w-6 h-6 text-primary" />
+            Free Medical Resources Library
+          </h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* PubMed */}
+            <a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank" rel="noopener noreferrer" className="group p-6 rounded-xl border border-border bg-card hover:shadow-lg hover:border-primary/50 transition-all">
+              <div className="flex items-start justify-between mb-4">
+                <div className="p-3 rounded-lg bg-blue-500/10">
+                  <FileText className="w-6 h-6 text-blue-500" />
+                </div>
+                <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+              </div>
+              <h3 className="font-bold mb-2">PubMed</h3>
+              <p className="text-sm text-muted-foreground">35+ million citations for biomedical literature from MEDLINE and life science journals</p>
+            </a>
+
+            {/* WHO Resources */}
+            <a href="https://www.who.int/health-topics" target="_blank" rel="noopener noreferrer" className="group p-6 rounded-xl border border-border bg-card hover:shadow-lg hover:border-primary/50 transition-all">
+              <div className="flex items-start justify-between mb-4">
+                <div className="p-3 rounded-lg bg-green-500/10">
+                  <Activity className="w-6 h-6 text-green-500" />
+                </div>
+                <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+              </div>
+              <h3 className="font-bold mb-2">WHO Health Topics</h3>
+              <p className="text-sm text-muted-foreground">Comprehensive health information and guidelines from the World Health Organization</p>
+            </a>
+
+            {/* CDC Resources */}
+            <a href="https://www.cdc.gov/" target="_blank" rel="noopener noreferrer" className="group p-6 rounded-xl border border-border bg-card hover:shadow-lg hover:border-primary/50 transition-all">
+              <div className="flex items-start justify-between mb-4">
+                <div className="p-3 rounded-lg bg-red-500/10">
+                  <Stethoscope className="w-6 h-6 text-red-500" />
+                </div>
+                <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+              </div>
+              <h3 className="font-bold mb-2">CDC Resources</h3>
+              <p className="text-sm text-muted-foreground">Disease control, prevention guidelines, and public health information</p>
+            </a>
+
+            {/* Gray's Anatomy */}
+            <a href="https://www.bartleby.com/lit-hub/grays-anatomy/" target="_blank" rel="noopener noreferrer" className="group p-6 rounded-xl border border-border bg-card hover:shadow-lg hover:border-primary/50 transition-all">
+              <div className="flex items-start justify-between mb-4">
+                <div className="p-3 rounded-lg bg-purple-500/10">
+                  <BookOpen className="w-6 h-6 text-purple-500" />
+                </div>
+                <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+              </div>
+              <h3 className="font-bold mb-2">Gray&apos;s Anatomy</h3>
+              <p className="text-sm text-muted-foreground">Classic anatomical reference text available free online</p>
+            </a>
+
+            {/* OpenMD */}
+            <a href="https://www.ncbi.nlm.nih.gov/books/NBK547852/" target="_blank" rel="noopener noreferrer" className="group p-6 rounded-xl border border-border bg-card hover:shadow-lg hover:border-primary/50 transition-all">
+              <div className="flex items-start justify-between mb-4">
+                <div className="p-3 rounded-lg bg-orange-500/10">
+                  <Microscope className="w-6 h-6 text-orange-500" />
+                </div>
+                <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+              </div>
+              <h3 className="font-bold mb-2">NCBI Bookshelf</h3>
+              <p className="text-sm text-muted-foreground">Free access to books and documents in life science and healthcare</p>
+            </a>
+
+            {/* MedlinePlus */}
+            <a href="https://medlineplus.gov/" target="_blank" rel="noopener noreferrer" className="group p-6 rounded-xl border border-border bg-card hover:shadow-lg hover:border-primary/50 transition-all">
+              <div className="flex items-start justify-between mb-4">
+                <div className="p-3 rounded-lg bg-cyan-500/10">
+                  <Pill className="w-6 h-6 text-cyan-500" />
+                </div>
+                <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+              </div>
+              <h3 className="font-bold mb-2">MedlinePlus</h3>
+              <p className="text-sm text-muted-foreground">Trusted health information from the National Library of Medicine</p>
+            </a>
           </div>
         </div>
 
-        {/* Recommended Next Steps */}
-        <div className="mt-12 p-8 rounded-2xl bg-gradient-to-br from-primary/10 to-purple-500/10 border border-primary/20">
-          <h2 className="text-2xl font-bold mb-4">Recommended Next Steps</h2>
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-semibold text-sm">
-                1
+        {/* Newsletter & Community Section */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+            <Newspaper className="w-6 h-6 text-primary" />
+            Stay Connected
+          </h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Newsletter */}
+            <Link href="/newsletter" className="group">
+              <div className="p-8 rounded-xl border border-border bg-card hover:shadow-xl hover:border-primary/50 transition-all">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="p-4 rounded-lg bg-primary/10">
+                    <Newspaper className="w-8 h-8 text-primary" />
+                  </div>
+                  <ArrowUpRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Weekly Newsletter</h3>
+                <p className="text-muted-foreground mb-4">
+                  Get the latest medical education tips, study strategies, and platform updates delivered to your inbox every week
+                </p>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <span>10,000+ subscribers</span>
+                </div>
               </div>
-              <Link href="/test-prep" className="text-foreground hover:text-primary font-medium">
-                Take your first practice quiz
-              </Link>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-semibold text-sm">
-                2
+            </Link>
+
+            {/* Community */}
+            <Link href="/newsletter" className="group">
+              <div className="p-8 rounded-xl border border-border bg-card hover:shadow-xl hover:border-primary/50 transition-all">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="p-4 rounded-lg bg-purple-500/10">
+                    <Users className="w-8 h-8 text-purple-500" />
+                  </div>
+                  <ArrowUpRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Join the Community</h3>
+                <p className="text-muted-foreground mb-4">
+                  Connect with fellow medical students on Discord and Reddit. Share notes, ask questions, and collaborate
+                </p>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <span>25,000+ active members</span>
+                </div>
               </div>
-              <Link href="/encyclopedia" className="text-foreground hover:text-primary font-medium">
-                Explore 3D anatomical models
-              </Link>
+            </Link>
+          </div>
+        </div>
+
+        {/* Motivational Banner */}
+        <div className="p-8 md:p-12 rounded-2xl bg-gradient-to-br from-primary via-blue-600 to-purple-600 text-white shadow-2xl">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+              <h2 className="text-3xl font-bold mb-2">Ready to Level Up? 🚀</h2>
+              <p className="text-white/90 text-lg">
+                Complete your first exam today and earn 100 XP!
+              </p>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-semibold text-sm">
-                3
-              </div>
-              <Link href="/newsletter" className="text-foreground hover:text-primary font-medium">
-                Subscribe to the newsletter
-              </Link>
-            </div>
+            <Link
+              href="/test-prep"
+              className="px-8 py-4 rounded-lg bg-white text-primary font-bold hover:bg-gray-100 transition-colors shadow-xl whitespace-nowrap"
+            >
+              Start Learning
+            </Link>
           </div>
         </div>
       </div>
