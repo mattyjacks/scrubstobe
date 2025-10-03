@@ -1,9 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpen, Brain, Trophy, Users, TrendingUp, Clock, Target, Flame, Zap, Star, CheckCircle, Heart, Sparkles, ArrowUpRight, Calendar, BarChart3, Medal, Library, ExternalLink, FileText, Newspaper, Stethoscope, Microscope, Pill, Activity } from "lucide-react";
+import { BookOpen, Brain, Trophy, Users, TrendingUp, Clock, Target, Flame, Zap, Star, CheckCircle, Heart, Sparkles, ArrowUpRight, Calendar, BarChart3, Medal, Library, ExternalLink, FileText, Newspaper, Stethoscope, Microscope, Pill, Activity, Home, Menu, X } from "lucide-react";
+import { useState } from "react";
 
 export default function HubPage() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   // Simulated data - in production, this would come from database
   const userData = {
     name: "Student",
@@ -34,8 +37,113 @@ export default function HubPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-muted/10 to-muted/20">
+      {/* Navigation Bar */}
+      <nav className="border-b border-border bg-background/95 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-5">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-2 font-bold text-xl">
+              <Stethoscope className="w-6 h-6 text-primary" />
+              <span>Scrubs to Be</span>
+            </Link>
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-6">
+              <Link href="/" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+                <Home className="w-4 h-4" />
+                Home
+              </Link>
+              <Link href="/hub" className="text-primary font-semibold">
+                Hub
+              </Link>
+              <Link href="/test-prep" className="text-muted-foreground hover:text-primary transition-colors">
+                Test Prep
+              </Link>
+              <Link href="/encyclopedia" className="text-muted-foreground hover:text-primary transition-colors">
+                Encyclopedia
+              </Link>
+              <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">
+                About
+              </Link>
+              <Link href="/institutions" className="text-muted-foreground hover:text-primary transition-colors">
+                For Institutions
+              </Link>
+              <Link href="/contact" className="text-muted-foreground hover:text-primary transition-colors">
+                Contact
+              </Link>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="md:hidden p-2 rounded-lg hover:bg-muted transition-colors"
+            >
+              {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
+
+          {/* Mobile Menu */}
+          {isMenuOpen && (
+            <div className="md:hidden py-4 border-t border-border">
+              <div className="flex flex-col gap-2">
+                <Link 
+                  href="/" 
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-muted-foreground hover:text-primary hover:bg-muted transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <Home className="w-4 h-4" />
+                  Home
+                </Link>
+                <Link 
+                  href="/hub" 
+                  className="px-3 py-2 rounded-lg text-primary font-semibold bg-primary/10"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Hub
+                </Link>
+                <Link 
+                  href="/test-prep" 
+                  className="px-3 py-2 rounded-lg text-muted-foreground hover:text-primary hover:bg-muted transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Test Prep
+                </Link>
+                <Link 
+                  href="/encyclopedia" 
+                  className="px-3 py-2 rounded-lg text-muted-foreground hover:text-primary hover:bg-muted transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Encyclopedia
+                </Link>
+                <Link 
+                  href="/about" 
+                  className="px-3 py-2 rounded-lg text-muted-foreground hover:text-primary hover:bg-muted transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  About
+                </Link>
+                <Link 
+                  href="/institutions" 
+                  className="px-3 py-2 rounded-lg text-muted-foreground hover:text-primary hover:bg-muted transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  For Institutions
+                </Link>
+                <Link 
+                  href="/contact" 
+                  className="px-3 py-2 rounded-lg text-muted-foreground hover:text-primary hover:bg-muted transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Contact
+                </Link>
+              </div>
+            </div>
+          )}
+        </div>
+      </nav>
+
       {/* Enhanced Header with Streak & Level */}
-      <div className="border-b border-border bg-background/80 backdrop-blur-sm sticky top-0 z-50">
+      <div className="border-b border-border bg-background/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-5 py-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
@@ -490,6 +598,64 @@ export default function HubPage() {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="border-t border-border bg-background/80 backdrop-blur-sm mt-20">
+        <div className="max-w-7xl mx-auto px-5 py-12">
+          <div className="grid md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <Stethoscope className="w-5 h-5 text-primary" />
+                <span className="font-semibold">Scrubs to Be</span>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Transforming medical education through innovation and technology
+              </p>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold mb-3">Platform</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><Link href="/hub" className="hover:text-primary transition-colors">Hub</Link></li>
+                <li><Link href="/test-prep" className="hover:text-primary transition-colors">Test Prep</Link></li>
+                <li><Link href="/encyclopedia" className="hover:text-primary transition-colors">Encyclopedia</Link></li>
+                <li><Link href="/newsletter" className="hover:text-primary transition-colors">Newsletter</Link></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold mb-3">Company</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><Link href="/about" className="hover:text-primary transition-colors">About Us</Link></li>
+                <li><Link href="/institutions" className="hover:text-primary transition-colors">For Institutions</Link></li>
+                <li><Link href="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
+                <li><Link href="/careers" className="hover:text-primary transition-colors">Careers</Link></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold mb-3">Legal</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
+                <li><Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link></li>
+                <li><a href="mailto:support@scrubstobe.com" className="hover:text-primary transition-colors">Support</a></li>
+                <li><a href="mailto:legal@scrubstobe.com" className="hover:text-primary transition-colors">Legal</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-sm text-muted-foreground">
+              © 2025 Scrubs to Be. All rights reserved.
+            </p>
+            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+              <Link href="/privacy" className="hover:text-primary transition-colors">Privacy</Link>
+              <Link href="/terms" className="hover:text-primary transition-colors">Terms</Link>
+              <a href="mailto:support@scrubstobe.com" className="hover:text-primary transition-colors">Support</a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

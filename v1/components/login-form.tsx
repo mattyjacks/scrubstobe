@@ -105,6 +105,19 @@ export function LoginForm({
           </form>
         </CardContent>
       </Card>
+      
+      {/* Legal Links */}
+      <div className="text-center text-xs text-muted-foreground">
+        <p className="mb-2">By signing in, you agree to our</p>
+        <div className="flex justify-center gap-4">
+          <Link href="/terms" className="hover:text-primary underline underline-offset-4">
+            Terms of Service
+          </Link>
+          <Link href="/privacy" className="hover:text-primary underline underline-offset-4">
+            Privacy Policy
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
