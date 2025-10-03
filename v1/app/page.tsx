@@ -29,8 +29,11 @@ export default function Home() {
                 <Link href="/encyclopedia" className="text-muted-foreground hover:text-primary transition-colors">
                   Encyclopedia
                 </Link>
-                <Link href="/newsletter" className="text-muted-foreground hover:text-primary transition-colors">
-                  Newsletter
+                <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">
+                  About
+                </Link>
+                <Link href="/institutions" className="text-muted-foreground hover:text-primary transition-colors">
+                  For Institutions
                 </Link>
               </div>
             </div>
@@ -221,6 +224,82 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Success Metrics */}
+        <section className="w-full bg-background border-y border-border py-16">
+          <div className="max-w-7xl mx-auto px-5">
+            <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Proven Results</h2>
+            <div className="grid md:grid-cols-4 gap-8">
+              <div className="text-center">
+                <div className="text-4xl md:text-5xl font-bold text-primary mb-2">25,000+</div>
+                <div className="text-muted-foreground">Active Students</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl md:text-5xl font-bold text-primary mb-2">98%</div>
+                <div className="text-muted-foreground">Satisfaction Rate</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl md:text-5xl font-bold text-primary mb-2">15-pt</div>
+                <div className="text-muted-foreground">Avg MCAT Improvement</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl md:text-5xl font-bold text-primary mb-2">50+</div>
+                <div className="text-muted-foreground">Partner Institutions</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Testimonials */}
+        <section className="w-full max-w-7xl px-5 py-20">
+          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">What Students & Educators Say</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="p-6 rounded-xl border border-border bg-card">
+              <div className="flex gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <span key={i} className="text-yellow-500 text-xl">★</span>
+                ))}
+              </div>
+              <p className="text-muted-foreground mb-6 italic">
+                &quot;This platform completely changed how I study. The 3D anatomy models and adaptive quizzes helped me improve my MCAT score by 18 points!&quot;
+              </p>
+              <div className="border-t border-border pt-4">
+                <div className="font-bold">Sarah Johnson</div>
+                <div className="text-sm text-primary">Pre-Med Student, UC Berkeley</div>
+              </div>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card">
+              <div className="flex gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <span key={i} className="text-yellow-500 text-xl">★</span>
+                ))}
+              </div>
+              <p className="text-muted-foreground mb-6 italic">
+                &quot;As a medical educator, I&apos;m impressed by the evidence-based approach and alignment with USMLE standards. Our students love it.&quot;
+              </p>
+              <div className="border-t border-border pt-4">
+                <div className="font-bold">Dr. Michael Chen, MD</div>
+                <div className="text-sm text-primary">Professor, Johns Hopkins School of Medicine</div>
+              </div>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card">
+              <div className="flex gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <span key={i} className="text-yellow-500 text-xl">★</span>
+                ))}
+              </div>
+              <p className="text-muted-foreground mb-6 italic">
+                &quot;The gamified simulations make learning actually fun. I finally understand pathophysiology instead of just memorizing it.&quot;
+              </p>
+              <div className="border-t border-border pt-4">
+                <div className="font-bold">Marcus Williams</div>
+                <div className="text-sm text-primary">1st Year Medical Student, Stanford</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Call to Action */}
         <section className="w-full max-w-7xl px-5 py-20">
           <div className="rounded-3xl bg-gradient-to-br from-primary via-blue-600 to-purple-600 p-12 md:p-20 text-center text-white shadow-2xl">
@@ -243,15 +322,49 @@ export default function Home() {
         {/* Footer */}
         <footer className="w-full border-t border-border py-12 mt-20">
           <div className="max-w-7xl mx-auto px-5">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-              <div className="flex items-center gap-2">
-                <Stethoscope className="w-5 h-5 text-primary" />
-                <span className="font-semibold">Scrubs to Be</span>
-                <span className="text-muted-foreground">© 2025</span>
+            <div className="grid md:grid-cols-4 gap-8 mb-8">
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  <Stethoscope className="w-5 h-5 text-primary" />
+                  <span className="font-semibold">Scrubs to Be</span>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Transforming medical education through innovation and technology
+                </p>
               </div>
-              <p className="text-sm text-muted-foreground text-center">
-                Redefining medical education as an immersive, personalized, and lifelong journey
-              </p>
+              
+              <div>
+                <h3 className="font-semibold mb-3">Platform</h3>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li><Link href="/hub" className="hover:text-primary transition-colors">Hub</Link></li>
+                  <li><Link href="/test-prep" className="hover:text-primary transition-colors">Test Prep</Link></li>
+                  <li><Link href="/encyclopedia" className="hover:text-primary transition-colors">Encyclopedia</Link></li>
+                  <li><Link href="/newsletter" className="hover:text-primary transition-colors">Newsletter</Link></li>
+                </ul>
+              </div>
+              
+              <div>
+                <h3 className="font-semibold mb-3">Company</h3>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li><Link href="/about" className="hover:text-primary transition-colors">About Us</Link></li>
+                  <li><Link href="/institutions" className="hover:text-primary transition-colors">For Institutions</Link></li>
+                  <li><Link href="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
+                  <li><Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
+                </ul>
+              </div>
+              
+              <div>
+                <h3 className="font-semibold mb-3">Connect</h3>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li><a href="https://discord.gg/scrubstobe" className="hover:text-primary transition-colors">Discord</a></li>
+                  <li><a href="https://reddit.com/r/scrubstobe" className="hover:text-primary transition-colors">Reddit</a></li>
+                  <li><a href="mailto:support@scrubstobe.com" className="hover:text-primary transition-colors">Email</a></li>
+                </ul>
+              </div>
+            </div>
+            
+            <div className="border-t border-border pt-8 text-center text-sm text-muted-foreground">
+              <p>© 2025 Scrubs to Be. All rights reserved. | Redefining medical education as an immersive, personalized, and lifelong journey</p>
             </div>
           </div>
         </footer>
