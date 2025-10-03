@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpen, Brain, Trophy, Users, TrendingUp, Clock, Target, Flame, Zap, Star, CheckCircle, Heart, Sparkles, ArrowUpRight, Calendar, BarChart3, Medal, Library, ExternalLink, FileText, Newspaper, Stethoscope, Microscope, Pill, Activity, Home, Menu, X } from "lucide-react";
+import Image from "next/image";
+import { BookOpen, Brain, Trophy, Users, TrendingUp, Clock, Target, Flame, Zap, Star, CheckCircle, Heart, Sparkles, ArrowUpRight, Calendar, BarChart3, Medal, Library, ExternalLink, FileText, Newspaper, Microscope, Pill, Activity, Home, Menu, X } from "lucide-react";
 import { useState } from "react";
 
 export default function HubPage() {
@@ -42,9 +43,15 @@ export default function HubPage() {
         <div className="max-w-7xl mx-auto px-5">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 font-bold text-xl">
-              <Stethoscope className="w-6 h-6 text-primary" />
-              <span>Scrubs to Be</span>
+            <Link href="/" className="flex items-center gap-2">
+              <Image 
+                src="/images/scrubs to be logo 1.png" 
+                alt="Scrubs to Be Logo" 
+                width={140} 
+                height={45}
+                className="h-9 w-auto"
+                priority
+              />
             </Link>
 
             {/* Desktop Navigation */}
@@ -485,7 +492,7 @@ export default function HubPage() {
             <a href="https://www.cdc.gov/" target="_blank" rel="noopener noreferrer" className="group p-6 rounded-xl border border-border bg-card hover:shadow-lg hover:border-primary/50 transition-all">
               <div className="flex items-start justify-between mb-4">
                 <div className="p-3 rounded-lg bg-red-500/10">
-                  <Stethoscope className="w-6 h-6 text-red-500" />
+                  <Activity className="w-6 h-6 text-red-500" />
                 </div>
                 <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
               </div>
@@ -604,9 +611,14 @@ export default function HubPage() {
         <div className="max-w-7xl mx-auto px-5 py-12">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <div className="flex items-center gap-2 mb-4">
-                <Stethoscope className="w-5 h-5 text-primary" />
-                <span className="font-semibold">Scrubs to Be</span>
+              <div className="flex items-center gap-3 mb-4">
+                <Image 
+                  src="/images/scrubs to be logo 1.png" 
+                  alt="Scrubs to Be Logo" 
+                  width={120} 
+                  height={40}
+                  className="h-8 w-auto"
+                />
               </div>
               <p className="text-sm text-muted-foreground">
                 Transforming medical education through innovation and technology

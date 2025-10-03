@@ -3,7 +3,8 @@ import { AuthButton } from "@/components/auth-button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { hasEnvVars } from "@/lib/utils";
 import Link from "next/link";
-import { Stethoscope, Brain, Blocks, Shield, Users, Zap, GraduationCap, Trophy, Target } from "lucide-react";
+import Image from "next/image";
+import { Brain, Blocks, Shield, Users, Zap, GraduationCap, Trophy, Target } from "lucide-react";
 
 export default function Home() {
   return (
@@ -13,11 +14,15 @@ export default function Home() {
         <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16 backdrop-blur-sm bg-background/80 sticky top-0 z-50">
           <div className="w-full max-w-7xl flex justify-between items-center p-3 px-5 text-sm">
             <div className="flex gap-5 items-center font-semibold">
-              <Link href={"/"} className="flex items-center gap-2 text-xl">
-                <Stethoscope className="w-6 h-6 text-primary" />
-                <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                  Scrubs to Be
-                </span>
+              <Link href={"/"} className="flex items-center gap-3">
+                <Image 
+                  src="/images/scrubs to be logo 1.png" 
+                  alt="Scrubs to Be Logo" 
+                  width={150} 
+                  height={50}
+                  className="h-10 w-auto"
+                  priority
+                />
               </Link>
               <div className="hidden md:flex items-center gap-6 ml-8 text-sm">
                 <Link href="/hub" className="text-muted-foreground hover:text-primary transition-colors">
@@ -324,9 +329,14 @@ export default function Home() {
           <div className="max-w-7xl mx-auto px-5">
             <div className="grid md:grid-cols-4 gap-8 mb-8">
               <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <Stethoscope className="w-5 h-5 text-primary" />
-                  <span className="font-semibold">Scrubs to Be</span>
+                <div className="flex items-center gap-3 mb-4">
+                  <Image 
+                    src="/images/scrubs to be logo 1.png" 
+                    alt="Scrubs to Be Logo" 
+                    width={120} 
+                    height={40}
+                    className="h-8 w-auto"
+                  />
                 </div>
                 <p className="text-sm text-muted-foreground">
                   Transforming medical education through innovation and technology
