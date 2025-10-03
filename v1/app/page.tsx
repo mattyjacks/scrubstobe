@@ -1,49 +1,259 @@
-import { DeployButton } from "@/components/deploy-button";
 import { EnvVarWarning } from "@/components/env-var-warning";
 import { AuthButton } from "@/components/auth-button";
-import { Hero } from "@/components/hero";
 import { ThemeSwitcher } from "@/components/theme-switcher";
-import { ConnectSupabaseSteps } from "@/components/tutorial/connect-supabase-steps";
-import { SignUpUserSteps } from "@/components/tutorial/sign-up-user-steps";
 import { hasEnvVars } from "@/lib/utils";
 import Link from "next/link";
+import { Stethoscope, Brain, Blocks, Shield, Users, Zap, GraduationCap, Trophy, Target } from "lucide-react";
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex flex-col items-center">
-      <div className="flex-1 w-full flex flex-col gap-20 items-center">
-        <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-          <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
+    <main className="min-h-screen flex flex-col items-center bg-gradient-to-b from-background to-muted/20">
+      <div className="flex-1 w-full flex flex-col items-center">
+        {/* Navigation */}
+        <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16 backdrop-blur-sm bg-background/80 sticky top-0 z-50">
+          <div className="w-full max-w-7xl flex justify-between items-center p-3 px-5 text-sm">
             <div className="flex gap-5 items-center font-semibold">
-              <Link href={"/"}>Next.js Supabase Starter</Link>
-              <div className="flex items-center gap-2">
-                <DeployButton />
+              <Link href={"/"} className="flex items-center gap-2 text-xl">
+                <Stethoscope className="w-6 h-6 text-primary" />
+                <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                  Scrubs to Be
+                </span>
+              </Link>
+              <div className="hidden md:flex items-center gap-6 ml-8 text-sm">
+                <Link href="/hub" className="text-muted-foreground hover:text-primary transition-colors">
+                  Hub
+                </Link>
+                <Link href="/test-prep" className="text-muted-foreground hover:text-primary transition-colors">
+                  Test Prep
+                </Link>
+                <Link href="/encyclopedia" className="text-muted-foreground hover:text-primary transition-colors">
+                  Encyclopedia
+                </Link>
+                <Link href="/newsletter" className="text-muted-foreground hover:text-primary transition-colors">
+                  Newsletter
+                </Link>
               </div>
             </div>
-            {!hasEnvVars ? <EnvVarWarning /> : <AuthButton />}
+            <div className="flex items-center gap-4">
+              <ThemeSwitcher />
+              {!hasEnvVars ? <EnvVarWarning /> : <AuthButton />}
+            </div>
           </div>
         </nav>
-        <div className="flex-1 flex flex-col gap-20 max-w-5xl p-5">
-          <Hero />
-          <main className="flex-1 flex flex-col gap-6 px-4">
-            <h2 className="font-medium text-xl mb-4">Next steps</h2>
-            {hasEnvVars ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
-          </main>
-        </div>
 
-        <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
-          <p>
-            Powered by{" "}
-            <a
-              href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-              target="_blank"
-              className="font-bold hover:underline"
-              rel="noreferrer"
+        {/* Hero Section */}
+        <section className="w-full max-w-7xl px-5 py-20 md:py-32">
+          <div className="text-center space-y-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+              <Zap className="w-4 h-4" />
+              <span>Transforming Medical Education</span>
+            </div>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight">
+              Your Journey from
+              <br />
+              <span className="bg-gradient-to-r from-primary via-blue-500 to-purple-500 bg-clip-text text-transparent">
+                Pre-Med to Professional
+              </span>
+            </h1>
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              An adaptive, interactive ecosystem integrating applied skills, critical thinking, 
+              and career readiness for the next generation of healthcare professionals.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4 pt-8">
+              <Link
+                href="/hub"
+                className="px-8 py-4 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors shadow-lg hover:shadow-xl"
+              >
+                Start Learning
+              </Link>
+              <Link
+                href="#features"
+                className="px-8 py-4 rounded-lg border-2 border-primary text-primary font-semibold hover:bg-primary/5 transition-colors"
+              >
+                Explore Features
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Key Innovation Banner */}
+        <section className="w-full bg-primary/5 border-y border-primary/10 py-8">
+          <div className="max-w-7xl mx-auto px-5">
+            <p className="text-center text-lg md:text-xl font-medium text-foreground/90">
+              The first EdTech solution to unify <span className="text-primary font-semibold">visualization</span>, 
+              <span className="text-primary font-semibold"> gamification</span>, 
+              <span className="text-primary font-semibold"> adaptive AI</span>, and 
+              <span className="text-primary font-semibold"> blockchain security</span> into one scalable platform
+            </p>
+          </div>
+        </section>
+
+        {/* Core Features Grid */}
+        <section id="features" className="w-full max-w-7xl px-5 py-20">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold mb-4">
+              Multi-Modal Innovation
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Advanced technologies converge into a single, comprehensive learning ecosystem
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* 3D Anatomical Models */}
+            <div className="group p-8 rounded-2xl border border-border bg-card hover:shadow-2xl hover:border-primary/50 transition-all duration-300">
+              <div className="w-14 h-14 rounded-xl bg-blue-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Blocks className="w-7 h-7 text-blue-500" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">3D Anatomical Models</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Immersive, manipulable tools enabling exploration of human anatomy in layered, 
+                interactive formats. Experience anatomy like never before.
+              </p>
+            </div>
+
+            {/* Gamified Simulations */}
+            <div className="group p-8 rounded-2xl border border-border bg-card hover:shadow-2xl hover:border-primary/50 transition-all duration-300">
+              <div className="w-14 h-14 rounded-xl bg-purple-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Trophy className="w-7 h-7 text-purple-500" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">Gamified Simulations</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Scenario-based exercises replicating diagnostic and treatment decisions, 
+                requiring critical thinking and rapid judgment in real-world contexts.
+              </p>
+            </div>
+
+            {/* Adaptive Learning */}
+            <div className="group p-8 rounded-2xl border border-border bg-card hover:shadow-2xl hover:border-primary/50 transition-all duration-300">
+              <div className="w-14 h-14 rounded-xl bg-green-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Brain className="w-7 h-7 text-green-500" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">AI-Driven Adaptive Learning</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Personalized learning paths that track performance and dynamically adjust 
+                content delivery to match your unique pace and style.
+              </p>
+            </div>
+
+            {/* Blockchain Integration */}
+            <div className="group p-8 rounded-2xl border border-border bg-card hover:shadow-2xl hover:border-primary/50 transition-all duration-300">
+              <div className="w-14 h-14 rounded-xl bg-orange-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Shield className="w-7 h-7 text-orange-500" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">Blockchain Credentials</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Secure, verifiable micro-credentials with intellectual property protection. 
+                Your achievements are permanently recorded and universally recognized.
+              </p>
+            </div>
+
+            {/* Community Ecosystem */}
+            <div className="group p-8 rounded-2xl border border-border bg-card hover:shadow-2xl hover:border-primary/50 transition-all duration-300">
+              <div className="w-14 h-14 rounded-xl bg-pink-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Users className="w-7 h-7 text-pink-500" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">Community Ecosystem</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Engage through Discord, Reddit, and newsletters, blending structured 
+                instruction with peer-to-peer learning and collaboration.
+              </p>
+            </div>
+
+            {/* Career-Long Learning */}
+            <div className="group p-8 rounded-2xl border border-border bg-card hover:shadow-2xl hover:border-primary/50 transition-all duration-300">
+              <div className="w-14 h-14 rounded-xl bg-cyan-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <GraduationCap className="w-7 h-7 text-cyan-500" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4">Career-Long Learning</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                From pre-med through professional licensing and beyond. A comprehensive 
+                solution that grows with you throughout your entire healthcare journey.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Competitive Advantage */}
+        <section className="w-full bg-gradient-to-br from-primary/5 to-purple-500/5 py-20">
+          <div className="max-w-7xl mx-auto px-5">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-5xl font-bold mb-4">
+                Beyond Traditional Test Prep
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+                While competitors focus on rote memorization or standardized tests, 
+                Scrubs to Be delivers clinical readiness, verified credentials, and lifelong learning
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8 mt-16">
+              <div className="text-center p-6">
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                  <Target className="w-8 h-8 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-2">Clinical Readiness</h3>
+                <p className="text-muted-foreground">
+                  Not just test scores, but real-world diagnostic and treatment skills
+                </p>
+              </div>
+
+              <div className="text-center p-6">
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                  <Shield className="w-8 h-8 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-2">Verified Credentials</h3>
+                <p className="text-muted-foreground">
+                  Blockchain-secured micro-credentials recognized by institutions
+                </p>
+              </div>
+
+              <div className="text-center p-6">
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                  <Brain className="w-8 h-8 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-2">Personalized Journey</h3>
+                <p className="text-muted-foreground">
+                  AI-driven adaptation that evolves with your learning style
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Call to Action */}
+        <section className="w-full max-w-7xl px-5 py-20">
+          <div className="rounded-3xl bg-gradient-to-br from-primary via-blue-600 to-purple-600 p-12 md:p-20 text-center text-white shadow-2xl">
+            <h2 className="text-3xl md:text-5xl font-bold mb-6">
+              Ready to Transform Your Medical Education?
+            </h2>
+            <p className="text-xl md:text-2xl mb-10 opacity-90 max-w-2xl mx-auto">
+              Join the next generation of healthcare professionals learning with 
+              immersive technology and adaptive AI
+            </p>
+            <Link
+              href="/hub"
+              className="inline-block px-10 py-5 rounded-lg bg-white text-primary font-bold text-lg hover:bg-gray-100 transition-colors shadow-xl hover:shadow-2xl hover:scale-105 transform duration-200"
             >
-              Supabase
-            </a>
-          </p>
-          <ThemeSwitcher />
+              Get Started Today
+            </Link>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="w-full border-t border-border py-12 mt-20">
+          <div className="max-w-7xl mx-auto px-5">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+              <div className="flex items-center gap-2">
+                <Stethoscope className="w-5 h-5 text-primary" />
+                <span className="font-semibold">Scrubs to Be</span>
+                <span className="text-muted-foreground">© 2025</span>
+              </div>
+              <p className="text-sm text-muted-foreground text-center">
+                Redefining medical education as an immersive, personalized, and lifelong journey
+              </p>
+            </div>
+          </div>
         </footer>
       </div>
     </main>

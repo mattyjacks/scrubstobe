@@ -1,8 +1,6 @@
 # scrubstobe
 Scrubs To Be
 
-
-
 1. Technology Innovation
 Scrubs to be is a medical education technology platform designed to transform how students
 prepare for healthcare careers, from pre-med through professional licensing and beyond.
