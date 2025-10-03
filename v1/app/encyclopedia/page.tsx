@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { BookOpen, Search, Layers, Heart, Bone, Brain as BrainIcon, Eye, Ear } from "lucide-react";
+import { BookOpen, Search, Layers, Heart, Bone, Brain as BrainIcon, Eye, Ear, ChevronDown, ChevronUp } from "lucide-react";
+import { allDefinitions } from "./definitions";
 
 // Sample encyclopedia entries
 const encyclopediaEntries = [
@@ -140,6 +141,10 @@ const colorClasses = {
 export default function EncyclopediaPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [showAllDefinitions, setShowAllDefinitions] = useState(false);
+  const [definitionsSearch, setDefinitionsSearch] = useState("");
+  const [expandedDefinition, setExpandedDefinition] = useState<number | null>(null);
+  const [selectedEntry, setSelectedEntry] = useState<number | null>(null);
 
   const filteredEntries = encyclopediaEntries.filter(entry => {
     const matchesSearch = entry.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -149,6 +154,16 @@ export default function EncyclopediaPage() {
   });
 
   const categories = Array.from(new Set(encyclopediaEntries.map(e => e.category)));
+
+  const filteredDefinitions = allDefinitions.filter(def => {
+    const matchesSearch = def.term.toLowerCase().includes(definitionsSearch.toLowerCase()) ||
+                         def.definition.toLowerCase().includes(definitionsSearch.toLowerCase());
+    return matchesSearch;
+  });
+
+  const getEntryDefinitions = (entryId: number) => {
+    return allDefinitions.filter(def => def.categoryId === entryId);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
@@ -169,6 +184,88 @@ export default function EncyclopediaPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-5 py-12">
+        {/* All Definitions Section */}
+        <div className="mb-12">
+          <button
+            onClick={() => setShowAllDefinitions(!showAllDefinitions)}
+            className="w-full p-6 rounded-2xl border-2 border-primary/30 bg-gradient-to-br from-primary/5 to-purple-500/5 hover:border-primary/50 transition-all duration-300 group"
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
+                  <BookOpen className="w-6 h-6 text-primary" />
+                </div>
+                <div className="text-left">
+                  <h2 className="text-2xl font-bold mb-1">All Definitions</h2>
+                  <p className="text-muted-foreground text-sm">
+                    Browse all {allDefinitions.length} medical terms and definitions
+                  </p>
+                </div>
+              </div>
+              {showAllDefinitions ? (
+                <ChevronUp className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
+              ) : (
+                <ChevronDown className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
+              )}
+            </div>
+          </button>
+
+          {showAllDefinitions && (
+            <div className="mt-6 p-6 rounded-2xl border border-border bg-card">
+              {/* Definitions Search */}
+              <div className="relative mb-6">
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="Search all definitions..."
+                  value={definitionsSearch}
+                  onChange={(e) => setDefinitionsSearch(e.target.value)}
+                  className="w-full pl-12 pr-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/50"
+                />
+              </div>
+
+              {/* Definitions Grid */}
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[600px] overflow-y-auto pr-2">
+                {filteredDefinitions.map(def => {
+                  const entryColors = colorClasses[encyclopediaEntries.find(e => e.id === def.categoryId)?.color as keyof typeof colorClasses];
+                  
+                  return (
+                    <div
+                      key={def.id}
+                      className={`p-4 rounded-xl border ${entryColors?.border || 'border-border'} ${entryColors?.bg || 'bg-muted/20'} hover:shadow-lg transition-all duration-200 cursor-pointer`}
+                      onClick={() => setExpandedDefinition(expandedDefinition === def.id ? null : def.id)}
+                    >
+                      <div className="flex items-start justify-between gap-2 mb-2">
+                        <h3 className={`font-bold text-sm ${entryColors?.text || 'text-foreground'}`}>
+                          {def.term}
+                        </h3>
+                        {expandedDefinition === def.id ? (
+                          <ChevronUp className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                        ) : (
+                          <ChevronDown className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                        )}
+                      </div>
+                      <p className={`text-xs text-muted-foreground mb-2 ${expandedDefinition === def.id ? '' : 'line-clamp-2'}`}>
+                        {def.definition}
+                      </p>
+                      <span className="text-xs text-muted-foreground/70">
+                        {def.category}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {filteredDefinitions.length === 0 && (
+                <div className="text-center py-12">
+                  <Search className="w-12 h-12 mx-auto mb-3 text-muted-foreground/50" />
+                  <p className="text-muted-foreground">No definitions found</p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
         {/* Search and Filter */}
         <div className="mb-12">
           <div className="relative mb-6">
@@ -230,46 +327,89 @@ export default function EncyclopediaPage() {
           {filteredEntries.map(entry => {
             const Icon = entry.icon;
             const colors = colorClasses[entry.color as keyof typeof colorClasses];
+            const entryDefinitions = getEntryDefinitions(entry.id);
+            const isExpanded = selectedEntry === entry.id;
             
             return (
               <div
                 key={entry.id}
-                className={`group p-6 rounded-2xl border ${colors.border} bg-card hover:shadow-2xl ${colors.hover} transition-all duration-300 cursor-pointer`}
+                className={`group rounded-2xl border ${colors.border} bg-card hover:shadow-2xl ${colors.hover} transition-all duration-300 ${isExpanded ? 'md:col-span-2 lg:col-span-3' : ''}`}
               >
-                <div className={`w-14 h-14 rounded-xl ${colors.bg} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                  <Icon className={`w-7 h-7 ${colors.text}`} />
-                </div>
-                
-                <div className="mb-2">
-                  <span className={`text-xs font-semibold ${colors.text} uppercase tracking-wide`}>
-                    {entry.category}
-                  </span>
-                </div>
-                
-                <h3 className="text-xl font-bold mb-3">{entry.title}</h3>
-                <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
-                  {entry.description}
-                </p>
+                <div
+                  className="p-6 cursor-pointer"
+                  onClick={() => setSelectedEntry(isExpanded ? null : entry.id)}
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className={`w-14 h-14 rounded-xl ${colors.bg} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                        <Icon className={`w-7 h-7 ${colors.text}`} />
+                      </div>
+                      
+                      <div className="mb-2">
+                        <span className={`text-xs font-semibold ${colors.text} uppercase tracking-wide`}>
+                          {entry.category}
+                        </span>
+                      </div>
+                      
+                      <h3 className="text-xl font-bold mb-3">{entry.title}</h3>
+                      <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+                        {entry.description}
+                      </p>
 
-                {/* Topics List */}
-                <div className="space-y-2 mb-4">
-                  {entry.topics.slice(0, 3).map((topic, idx) => (
-                    <div key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <div className={`w-1.5 h-1.5 rounded-full ${colors.bg}`} />
-                      <span>{topic}</span>
+                      {/* Topics List */}
+                      {!isExpanded && (
+                        <div className="space-y-2 mb-4">
+                          {entry.topics.slice(0, 3).map((topic, idx) => (
+                            <div key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <div className={`w-1.5 h-1.5 rounded-full ${colors.bg}`} />
+                              <span>{topic}</span>
+                            </div>
+                          ))}
+                          {entry.topics.length > 3 && (
+                            <div className="text-sm text-muted-foreground pl-3.5">
+                              +{entry.topics.length - 3} more topics
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
-                  ))}
-                  {entry.topics.length > 3 && (
-                    <div className="text-sm text-muted-foreground pl-3.5">
-                      +{entry.topics.length - 3} more topics
-                    </div>
-                  )}
+
+                    {isExpanded ? (
+                      <ChevronUp className={`w-6 h-6 ${colors.text} flex-shrink-0 ml-4`} />
+                    ) : (
+                      <ChevronDown className={`w-6 h-6 ${colors.text} flex-shrink-0 ml-4`} />
+                    )}
+                  </div>
+
+                  <div className={`flex items-center gap-2 ${colors.text} font-semibold text-sm mt-auto`}>
+                    <span>{isExpanded ? 'Hide' : 'View'} {entryDefinitions.length} Definitions</span>
+                    <span className="group-hover:translate-x-1 transition-transform">→</span>
+                  </div>
                 </div>
 
-                <div className={`flex items-center gap-2 ${colors.text} font-semibold text-sm mt-auto`}>
-                  <span>Explore Entry</span>
-                  <span className="group-hover:translate-x-1 transition-transform">→</span>
-                </div>
+                {/* Expanded Definitions */}
+                {isExpanded && (
+                  <div className="px-6 pb-6">
+                    <div className="border-t border-border pt-6">
+                      <h4 className="text-lg font-bold mb-4">Medical Definitions ({entryDefinitions.length})</h4>
+                      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {entryDefinitions.map(def => (
+                          <div
+                            key={def.id}
+                            className={`p-4 rounded-xl border ${colors.border} ${colors.bg} hover:shadow-md transition-all duration-200`}
+                          >
+                            <h5 className={`font-bold text-sm mb-2 ${colors.text}`}>
+                              {def.term}
+                            </h5>
+                            <p className="text-xs text-muted-foreground">
+                              {def.definition}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             );
           })}
