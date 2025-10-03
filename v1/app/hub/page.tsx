@@ -1,19 +1,12 @@
-import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+"use client";
+
 import Link from "next/link";
 import { BookOpen, Brain, Trophy, Users, TrendingUp, Clock, Target, Flame, Zap, Star, CheckCircle, Heart, Sparkles, ArrowUpRight, Calendar, BarChart3, Medal, Library, ExternalLink, FileText, Newspaper, Stethoscope, Microscope, Pill, Activity } from "lucide-react";
 
-export default async function HubPage() {
-  const supabase = await createClient();
-
-  const { data, error } = await supabase.auth.getClaims();
-  if (error || !data?.claims) {
-    redirect("/auth/login");
-  }
-
+export default function HubPage() {
   // Simulated data - in production, this would come from database
   const userData = {
-    name: data.claims.email?.split('@')[0] || "Student",
+    name: "Student",
     streak: 0,
     level: 1,
     xp: 0,
